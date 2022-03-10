@@ -1,3 +1,14 @@
+// code needed to activate certain funtions
+// bubbles {
+    // document.addEventListener("keydown", keydownHandler)
+
+    // let bubbles = [];
+
+    // requestAnimationFrame(drawBubbles);
+
+    // setInterval(addBubble, 1000)
+// }
+
 // walk through functions (basic draw functions)
 function stroke(style, lineWidth) {
     ctx.strokeStyle = style;
@@ -103,6 +114,33 @@ function newRandomBubble(initX, initY, initR, initColor){
         r:randomInt(5, 35),
         color:randomRGB()
     }
+}
+
+function keydownHandler(event) {
+    if (event.keyCode === 39) {
+        addBubble()
+    } else if (event.keyCode === 37) {
+        bubbles.pop();
+    }
+}
+
+function background(color){
+    fill(color);
+    rect(0, 0, cnv.width, cnv.height, "fill")
+}
+
+function drawBubbles(){
+    background("pink")
+
+    for(let i = 0; i < bubbles.length; i++){
+        moveBubble(bubbles[i]);
+        drawBubble(bubbles[i]);
+    }
+    requestAnimationFrame(drawBubbles);
+}
+
+function addBubble() {
+    bubbles.push(newRandomBubble());
 }
 
 // my functions (draw functions assginment)
