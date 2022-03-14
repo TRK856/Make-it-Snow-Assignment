@@ -6,15 +6,14 @@ let ctx = cnv.getContext("2d");
 cnv.width = 800;
 cnv.height = 600;
 
+let Snows = [];
 
-let Snows = {starCenterX: 220, starCenterY: 220, numberOfSpikes: 10, outerDepth: 5, innerDepth: 0, strokeFill: [false, true]};
-document.addEventListener("keydown", keydownHandler)
-
-Snows = [];
-
-requestAnimationFrame(drawSnow);
 
 setInterval(addSnow, 1000)
+
+document.addEventListener("keydown", keydownHandler);
+
+requestAnimationFrame(drawSnows);
 
 function createRandomSnowArray(total){
     let temp = [];
@@ -24,31 +23,63 @@ function createRandomSnowArray(total){
     return temp;
 }
 
-function newSnow(initX, initY, initR, initColor){
+function newSnow(initX, initY, initS, initO, initI, initColor){
     return{
         x:initX,
         y:initY,
-        r:initR,
+        s:initS,
+        o:initO,
+        i:initI,
         color:initColor
     }
 }
 
 function drawSnow(aSnow){
     stroke(aSnow.color)
-    circle(aSnow.x, aSnow.y, aSnow.r, "stroke")
+    fill(aSnow.color)
+    drawAStar(aSnow.x, aSnow.y, aSnow.s, aSnow.o, aSnow.i, [true, true])
 }
 
-function moveSnow(aSnow){
-    aSnow.x += randomInt(-2, 3);
-    aSnow.y += randomInt(-2, 3);
+function moveSnow(aSnow, [moveX, moveY], interval, repeatedInterval){
+    if(moveX === true){
+        for(let i = 0; i <= repeatedInterval; i++){
+            aSnow.x += interval;
+            setTimeout(1000)
+        }
+    } else if (moveY === true){
+        aSnow.y += 1;
+    }
 }
 
-function newRandomSnow(initX, initY, initR, initColor){
-    return{
-        x:randomInt(0, cnv.width),
-        y:randomInt(0, cnv.height),
-        r:randomInt(5, 35),
-        color:randomRGB()
+function newRandomSnow(){
+    let layer = randomInt(-1, 4)
+    if(layer === 4){
+        return{
+            x:randomInt(-20, cnv.width),
+            y:0,
+            s:randomInt(6, 10),
+            o:randomInt(7,10),
+            i:randomInt(3,5),
+            color:"white"
+        }
+    }  else if (layer === 2 || layer === 3){
+        return{
+            x:randomInt(0, cnv.width),
+            y:0,
+            s:randomInt(6, 10),
+            o:randomInt(4, 7),
+            i:randomInt(1,3),
+            color:"white"
+        }
+    }  else {
+        return{
+            x:randomInt(0, cnv.width),
+            y:0,
+            s:randomInt(6, 10),
+            o:randomInt(1,4),
+            i:0,
+            color:"white"
+        }
     }
 }
 
@@ -66,14 +97,25 @@ function background(color){
 }
 
 function drawSnows(){
-    background("pink")
+    background("black")
 
     for(let i = 0; i < Snows.length; i++){
-        moveSnow(Snows[i]);
+        moveSnow(Snows[i], [false, true]);
+        if (Snows[i].y > cnv.height){
+            Snows[i].y = 0;
+        }
         drawSnow(Snows[i]);
     }
     requestAnimationFrame(drawSnows);
 }
+
+setInterval(() => {
+    for(let i = 0; i < Snows.length; i++){
+        moveSnow(Snows[i], [true, false], randomInt(-1,5), randomInt(0,10))
+        drawSnow(Snows[i]);
+        setTimeout(1000)
+    }
+}, 1000)
 
 function addSnow() {
     Snows.push(newRandomSnow());
