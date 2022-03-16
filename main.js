@@ -14,7 +14,7 @@ let Snows = [];
 // automatically add snow
 setInterval(addSnow, 1000)
 
-// slanted snow effect
+// slanted snow effect + snow speed
 let moveX = randomDec(-1,1); 
 let moveY = randomDec(1,5);
 
