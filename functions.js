@@ -296,6 +296,8 @@ function newRandomSnow(){
             s:randomInt(6, 10),
             o:randomInt(7,10),
             i:randomInt(3,5),
+            moveX: randomDec(-2,2),
+            moveY: randomDec(3.25,4),
             color:"white"
         };
     }  else if (layer === 3){
@@ -305,6 +307,8 @@ function newRandomSnow(){
             s:randomInt(6, 10),
             o:randomInt(4, 7),
             i:randomInt(1,3),
+            moveX: randomDec(-1.5,1.5),
+            moveY: randomDec(2.5,3.25),
             color:"#d3d3d3"
         }
     }  else if (layer === 2){
@@ -314,6 +318,8 @@ function newRandomSnow(){
             s:randomInt(6, 10),
             o:randomInt(4, 7),
             i:randomInt(1,3),
+            moveX: randomDec(-1,1),
+            moveY: randomDec(1.75,2.5),
             color:"#979291"
         }
     }  else {
@@ -323,6 +329,8 @@ function newRandomSnow(){
             s:randomInt(6, 10),
             o:randomInt(1,4),
             i:0,
+            moveX: randomDec(-.5,.5),
+            moveY: randomDec(1,1.75),
             color:"625A59"
         }
     }
@@ -342,31 +350,20 @@ function drawSnows(){
     // background color
     background("black")
     
-    randomNumber = randomInt(-1,1)
     // Loop for each snow entity
     for(let i = 0; i < Snows.length; i++){
-        // ensures varibles remain unchanged
-        const moveXtemp = moveX;
-        const moveYtemp = moveY
-
-        // random chance for a snowflake to move more on the x-axis -or-on the y-axis;
-        if(randomInt(0, 10) == 10){
-            moveXtemp = moveX++;
-        } else if (randomInt(0, 50) == 50) {
-            moveYtemp = moveY++;
-        }
-
         // moves the snowflakes
-        moveSnow(Snows[i], [true, true], moveXtemp, moveYtemp);
+        moveSnow(Snows[i], [true, true],  Snows[i].moveX, Snows[i].moveY);
 
         // makes the snowflakes move infinitlyby creating horizontal and vertical boundries
         if (Snows[i].y > cnv.height + 3){
-            Snows[i].y = -3;
+            Snows[i].y = -2;
         } 
+        console.log(cnv.width)
         if (Snows[i].x > cnv.width + 3){
             Snows[i].x = -2;
         } 
-        if (Snows[i].x == -3){
+        if (Snows[i].x < -3){
             Snows[i].x = cnv.width + 2;
         }   
 

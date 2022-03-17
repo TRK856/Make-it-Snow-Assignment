@@ -8,15 +8,12 @@ cnv.height = 600;
 
 
 // let it snow assignment
+// litterally copied the bubbles array's and functions and made some changes and improvements
 // define array
 let Snows = [];
 
 // automatically add snow
 setInterval(addSnow, 1000)
-
-// slanted snow effect + snow speed
-let moveX = randomDec(-1,1); 
-let moveY = randomDec(1,5);
 
 // event listener
 document.addEventListener("keydown", keydownHandler);
